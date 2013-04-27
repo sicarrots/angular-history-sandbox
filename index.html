@@ -10,20 +10,35 @@
                 });
         function HistoryCtrl($scope, $location) {
             'use strict';
-             $scope.pushState = function (ev) {
+            $scope.message = 'Enter state message';
+            $scope.attempt = -1;
+            $scope.pushState = function (ev) {
                 ev.preventDefault();
-                $location.url('/history-test', false, {ala: 'makota'});
-             };
+                $scope.attempt += 1;
+                $location.url('/history-test-' + $scope.attempt, false, $scope.message);
+            };
+            $scope.$watch('$location.path()', function (path) {
+                $scope.stateMessage = $location.$$state; // Hackish access to 'pop-ed' state.
+            });
         }
-        window.onpopstate = function (ev) {
-            console.log(ev.state);
-        }
+//        window.onpopstate = function (ev) {
+//            var $smsg = $('#statemsg');
+//            if (ev.state)
+//                $smsg.val(ev.state);
+//            else
+//                $smsg.val('');
+//        }
     </script>
     <title>Angular history test</title>
 </head>
 <body>
     <div ng-controller="HistoryCtrl">
-        <a ng-click="pushState($event)" href="/history">Init history</a>
+        <label for="msg">Message:</label>
+        <input id="msg" type="text" ng-model="message" />
+        <br />
+        <a ng-click="pushState($event)"  href="/history" target="_self">Push state with current message</a> <br />
+        <label for="statemsg">State message:</label>
+        <input id="statemsg" type="text" value="{{ stateMessage }}" disabled/>
     </div>
 </body>
 </html>

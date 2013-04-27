@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.5-63688a0
+ * @license AngularJS v1.1.5-bbc0a7e
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1346,7 +1346,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.1.5-63688a0',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.1.5-bbc0a7e',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 1,
   dot: 5,
@@ -3556,12 +3556,12 @@ function Browser(window, document, $log, $sniffer) {
   var urlChangeListeners = [],
       urlChangeInit = false;
 
-  function fireUrlChange(state) {
+  function fireUrlChange(popStateEvent) {
     if (lastBrowserUrl == self.url()) return;
 
     lastBrowserUrl = self.url();
     forEach(urlChangeListeners, function(listener) {
-      listener(self.url(), state);
+      listener(self.url(), popStateEvent.originalEvent.state);
     });
   }
 
@@ -5876,11 +5876,10 @@ function locationGetter(property) {
 
 
 function locationGetterSetter(property, preprocess) {
-  return function(value, state) {
+  return function(value) {
     if (isUndefined(value))
       return this[property];
 
-    if (state) this.$$state = state;
     this[property] = preprocess(value);
     this.$$compose();
 
@@ -6014,11 +6013,11 @@ function $LocationProvider(){
     }
 
     // update $location when $browser url changes
-    $browser.onUrlChange(function(newUrl) {
+    $browser.onUrlChange(function(newUrl, state) {
       if ($location.absUrl() != newUrl) {
         $rootScope.$evalAsync(function() {
           var oldUrl = $location.absUrl();
-
+          $location.$$state = state;
           $location.$$parse(newUrl);
           afterLocationChange(oldUrl);
         });
