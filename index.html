@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="HistoryTest">
+<head>
+    <script src="jquery-2.0.0.js"></script>
+    <script src="angular.js"></script>
+    <script>
+        angular.module('HistoryTest', []).
+            config(function ($locationProvider) {
+                    $locationProvider.html5Mode(true);
+                });
+        function HistoryCtrl($scope, $location) {
+            'use strict';
+             $scope.pushState = function (ev) {
+                ev.preventDefault();
+                $location.url('/history-test', false, {ala: 'makota'});
+             };
+        }
+        window.onpopstate = function (ev) {
+            console.log(ev.state);
+        }
+    </script>
+    <title>Angular history test</title>
+</head>
+<body>
+    <div ng-controller="HistoryCtrl">
+        <a ng-click="pushState($event)" href="/history">Init history</a>
+    </div>
+</body>
+</html>
