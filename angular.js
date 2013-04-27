@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.1.5-bbc0a7e
+ * @license AngularJS v1.1.5-c70e3b5
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1346,7 +1346,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.1.5-bbc0a7e',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.1.5-c70e3b5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 1,
   dot: 5,
@@ -6051,7 +6051,7 @@ function $LocationProvider(){
     return $location;
 
     function afterLocationChange(oldUrl) {
-      $rootScope.$broadcast('$locationChangeSuccess', $location.absUrl(), oldUrl);
+      $rootScope.$broadcast('$locationChangeSuccess', $location.absUrl(), oldUrl, $location.$$state);
     }
 }];
 }

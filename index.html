@@ -8,7 +8,7 @@
             config(function ($locationProvider) {
                     $locationProvider.html5Mode(true);
                 });
-        function HistoryCtrl($scope, $location) {
+        function HistoryCtrl($scope, $location, $rootScope) {
             'use strict';
             $scope.message = 'Enter state message';
             $scope.attempt = -1;
@@ -17,8 +17,8 @@
                 $scope.attempt += 1;
                 $location.url('/history-test-' + $scope.attempt, false, $scope.message);
             };
-            $scope.$watch('$location.path()', function (path) {
-                $scope.stateMessage = $location.$$state; // Hackish access to 'pop-ed' state.
+            $rootScope.$on('$locationChangeSuccess', function (event, url, oldUrl, state) {
+                $scope.stateMessage = state; // Hackish access to 'pop-ed' state.
             });
         }
 //        window.onpopstate = function (ev) {
